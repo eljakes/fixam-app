@@ -49,7 +49,7 @@ export default function AuthNavigator() {
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="RoleSelection" component={RoleSelectionScreen} />
       <Stack.Screen name="RoleRedirect" component={RoleRedirectScreen} />
-      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+      <Stack.Screen name="ForgotPasword" component={ForgotPasswordScreen} />
 
       {/* Dashboards */}
       <Stack.Screen name="ClientDashboard" component={ClientDashboardScreen} />
