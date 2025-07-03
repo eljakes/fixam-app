@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Platform,
   Alert,
+  ImageBackground,
 } from 'react-native';
 import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -59,128 +60,134 @@ export default function SignupScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Back Arrow */}
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.backButton}
-      >
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
-
-      <Text style={styles.title}>Create Account</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Full Name"
-        placeholderTextColor="#999"
-        value={fullName}
-        onChangeText={setFullName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Phone Number"
-        placeholderTextColor="#999"
-        value={phone}
-        onChangeText={setPhone}
-        keyboardType="phone-pad"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        placeholderTextColor="#999"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-
-      {/* Password */}
-      <View style={styles.passwordContainer}>
-        <TextInput
-          style={styles.passwordInput}
-          placeholder="Password"
-          placeholderTextColor="#999"
-          secureTextEntry={!showPassword}
-          value={password}
-          onChangeText={setPassword}
-        />
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={{ flex: 1 }}
+      imageStyle={{ opacity: 0.2 }}
+    >
+      <View style={styles.container}>
+        {/* Back Arrow */}
         <TouchableOpacity
-          onPress={() => setShowPassword(!showPassword)}
-          style={styles.eyeIcon}
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
         >
-          <Ionicons
-            name={showPassword ? 'eye' : 'eye-off'}
-            size={20}
-            color="#888"
-          />
+          <Ionicons name="arrow-back" size={24} color="#D84315" />
         </TouchableOpacity>
-      </View>
 
-      {/* Confirm Password */}
-      <View style={styles.passwordContainer}>
+        <Text style={styles.title}>Create Account</Text>
+
         <TextInput
-          style={styles.passwordInput}
-          placeholder="Confirm Password"
+          style={styles.input}
+          placeholder="Full Name"
           placeholderTextColor="#999"
-          secureTextEntry={!showConfirmPassword}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
+          value={fullName}
+          onChangeText={setFullName}
         />
-        <TouchableOpacity
-          onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-          style={styles.eyeIcon}
-        >
-          <Ionicons
-            name={showConfirmPassword ? 'eye' : 'eye-off'}
-            size={20}
-            color="#888"
+        <TextInput
+          style={styles.input}
+          placeholder="Phone Number"
+          placeholderTextColor="#999"
+          value={phone}
+          onChangeText={setPhone}
+          keyboardType="phone-pad"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          placeholderTextColor="#999"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+
+        {/* Password */}
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Password"
+            placeholderTextColor="#999"
+            secureTextEntry={!showPassword}
+            value={password}
+            onChangeText={setPassword}
           />
-        </TouchableOpacity>
-      </View>
-
-      {/* Error Message */}
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-      {/* Sign Up */}
-      <TouchableOpacity style={styles.button} onPress={handleSignup}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
-
-      {/* Divider */}
-      <View style={styles.dividerContainer}>
-        <View style={styles.line} />
-        <Text style={styles.orText}>or sign up with</Text>
-        <View style={styles.line} />
-      </View>
-
-      {/* Google & Apple */}
-      <View style={styles.socialRow}>
-        <TouchableOpacity style={styles.socialButton}>
-          <AntDesign name="google" size={20} color="#D84315" />
-        </TouchableOpacity>
-        {Platform.OS === 'ios' && (
-          <TouchableOpacity style={styles.socialButton}>
-            <FontAwesome name="apple" size={20} color="#D84315" />
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={styles.eyeIcon}
+          >
+            <Ionicons
+              name={showPassword ? 'eye' : 'eye-off'}
+              size={20}
+              color="#888"
+            />
           </TouchableOpacity>
-        )}
-      </View>
+        </View>
 
-      {/* Switch to Login */}
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.switchText}>
-          Already have an account?{' '}
-          <Text style={{ color: '#D84315', fontWeight: '600' }}>Login</Text>
-        </Text>
-      </TouchableOpacity>
-    </View>
+        {/* Confirm Password */}
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Confirm Password"
+            placeholderTextColor="#999"
+            secureTextEntry={!showConfirmPassword}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
+          <TouchableOpacity
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            style={styles.eyeIcon}
+          >
+            <Ionicons
+              name={showConfirmPassword ? 'eye' : 'eye-off'}
+              size={20}
+              color="#888"
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/* Error Message */}
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+        {/* Sign Up */}
+        <TouchableOpacity style={styles.button} onPress={handleSignup}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+
+        {/* Divider */}
+        <View style={styles.dividerContainer}>
+          <View style={styles.line} />
+          <Text style={styles.orText}>or sign up with</Text>
+          <View style={styles.line} />
+        </View>
+
+        {/* Google & Apple */}
+        <View style={styles.socialRow}>
+          <TouchableOpacity style={styles.socialButton}>
+            <AntDesign name="google" size={20} color="#D84315" />
+          </TouchableOpacity>
+          {Platform.OS === 'ios' && (
+            <TouchableOpacity style={styles.socialButton}>
+              <FontAwesome name="apple" size={20} color="#D84315" />
+            </TouchableOpacity>
+          )}
+        </View>
+
+        {/* Switch to Login */}
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.switchText}>
+            Already have an account?{' '}
+            <Text style={{ color: '#D84315', fontWeight: '600' }}>Login</Text>
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
+    backgroundColor: 'transparent',
     paddingHorizontal: 20,
     paddingTop: 80,
   },

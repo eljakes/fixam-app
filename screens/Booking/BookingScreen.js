@@ -1,3 +1,4 @@
+// screens/BookingScreen.js
 import React, { useState } from 'react';
 import {
   View,
@@ -7,6 +8,9 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -20,97 +24,115 @@ export default function BookingScreen() {
   const [time, setTime] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleBack = () => navigation.goBack();
+  const handleConfirmBooking = () => {
+    navigation.navigate('BookingConfirmation', {
+      artisan,
+      bookingDetails: {
+        date,
+        time,
+        message,
+      },
+    });
+  };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={{ flex: 1 }}
+      imageStyle={{ opacity: 0.06 }}
     >
-      <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
+      <SafeAreaView style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
+          <ScrollView contentContainerStyle={styles.container}>
+            {/* Header */}
+            <View style={styles.header}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons name="arrow-back" size={24} color="#D84315" />
+              </TouchableOpacity>
+              <Text style={styles.title}>Book {artisan?.name}</Text>
+              <View style={{ width: 24 }} />
+            </View>
 
-      <Text style={styles.title}>Book {artisan?.name}</Text>
+            {/* Form */}
+            <View style={styles.card}>
+              <Text style={styles.label}>Date</Text>
+              <TextInput
+                placeholder="e.g., 2025-07-15"
+                style={styles.input}
+                value={date}
+                onChangeText={setDate}
+                placeholderTextColor="#999"
+              />
 
-      <Text style={styles.label}>Date</Text>
-      <TextInput
-        placeholder="e.g., 2024-07-01"
-        placeholderTextColor="#999"
-        style={styles.input}
-        value={date}
-        onChangeText={setDate}
-      />
+              <Text style={styles.label}>Time</Text>
+              <TextInput
+                placeholder="e.g., 14:30"
+                style={styles.input}
+                value={time}
+                onChangeText={setTime}
+                placeholderTextColor="#999"
+              />
 
-      <Text style={styles.label}>Time</Text>
-      <TextInput
-        placeholder="e.g., 14:30"
-        placeholderTextColor="#999"
-        style={styles.input}
-        value={time}
-        onChangeText={setTime}
-      />
+              <Text style={styles.label}>Message / Request Details</Text>
+              <TextInput
+                placeholder="Brief description of your job..."
+                style={[styles.input, styles.textArea]}
+                value={message}
+                onChangeText={setMessage}
+                multiline
+                numberOfLines={4}
+                placeholderTextColor="#999"
+              />
 
-      <Text style={styles.label}>Message / Request Details</Text>
-      <TextInput
-        placeholder="Brief description of your job..."
-        placeholderTextColor="#999"
-        style={[styles.input, styles.textArea]}
-        multiline
-        numberOfLines={4}
-        value={message}
-        onChangeText={setMessage}
-      />
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate('BookingConfirmation', {
-            artisan,
-            bookingDetails: {
-              date,
-              time,
-              message,
-            },
-          });
-        }}
-      >
-        <Text style={styles.buttonText}>Confirm Booking</Text>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
+              <TouchableOpacity style={styles.button} onPress={handleConfirmBooking}>
+                <Text style={styles.buttonText}>Confirm Booking</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#FFF3E0',
-    padding: 24,
-    paddingTop: 70,
+    padding: 20,
+    paddingBottom: 40,
+    flexGrow: 1,
   },
-  backButton: {
-    position: 'absolute',
-    top: 50,
-    left: 16,
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   title: {
     fontSize: 22,
     fontWeight: 'bold',
     color: '#D84315',
-    marginBottom: 24,
     textAlign: 'center',
   },
+  card: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 16,
+    elevation: 3,
+  },
   label: {
+    fontSize: 14,
     fontWeight: '600',
-    color: '#333',
-    marginBottom: 6,
+    color: '#444',
     marginTop: 16,
+    marginBottom: 6,
   },
   input: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
+    backgroundColor: '#fafafa',
+    borderRadius: 10,
+    padding: 14,
     fontSize: 16,
     borderWidth: 1,
     borderColor: '#ccc',
@@ -121,14 +143,14 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#D84315',
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
     marginTop: 30,
-    paddingVertical: 14,
-    borderRadius: 8,
   },
   buttonText: {
     color: '#fff',
-    textAlign: 'center',
-    fontWeight: '600',
+    fontWeight: 'bold',
     fontSize: 16,
   },
 });

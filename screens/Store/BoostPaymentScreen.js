@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Alert,
   Platform,
+  ImageBackground,
+  SafeAreaView,
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -23,7 +25,6 @@ export default function BoostPaymentScreen() {
       return;
     }
 
-    // TODO: Replace with real integration (Hubtel, Paystack, etc.)
     Alert.alert(
       'Payment Successful',
       `Your post has been boosted using ${selectedMethod.toUpperCase()}.`,
@@ -32,59 +33,68 @@ export default function BoostPaymentScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Back */}
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={styles.background}
+      imageStyle={{ opacity: 0.08 }}
+    >
+      <SafeAreaView style={styles.container}>
+        {/* Back Button */}
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#D84315" />
+        </TouchableOpacity>
 
-      <Text style={styles.title}>Complete Payment</Text>
-      <Text style={styles.amount}>GH₵{amount?.toFixed(2)}</Text>
+        <Text style={styles.title}>Complete Payment</Text>
+        <Text style={styles.amount}>GH₵{amount?.toFixed(2)}</Text>
 
-      <Text style={styles.subtitle}>Choose Payment Method</Text>
+        <Text style={styles.subtitle}>Choose Payment Method</Text>
 
-      {/* Mobile Money Option */}
-      <TouchableOpacity
-        style={[
-          styles.methodCard,
-          selectedMethod === 'momo' && styles.selectedCard,
-        ]}
-        onPress={() => setSelectedMethod('momo')}
-      >
-        <MaterialIcons name="phone-android" size={24} color="#D84315" />
-        <Text style={styles.methodText}>Mobile Money</Text>
-        {selectedMethod === 'momo' && (
-          <Ionicons name="checkmark-circle" size={20} color="#D84315" />
-        )}
-      </TouchableOpacity>
+        {/* Mobile Money Option */}
+        <TouchableOpacity
+          style={[
+            styles.methodCard,
+            selectedMethod === 'momo' && styles.selectedCard,
+          ]}
+          onPress={() => setSelectedMethod('momo')}
+        >
+          <MaterialIcons name="phone-android" size={24} color="#D84315" />
+          <Text style={styles.methodText}>Mobile Money</Text>
+          {selectedMethod === 'momo' && (
+            <Ionicons name="checkmark-circle" size={20} color="#D84315" />
+          )}
+        </TouchableOpacity>
 
-      {/* Card Option */}
-      <TouchableOpacity
-        style={[
-          styles.methodCard,
-          selectedMethod === 'card' && styles.selectedCard,
-        ]}
-        onPress={() => setSelectedMethod('card')}
-      >
-        <Ionicons name="card-outline" size={24} color="#D84315" />
-        <Text style={styles.methodText}>Debit/Credit Card</Text>
-        {selectedMethod === 'card' && (
-          <Ionicons name="checkmark-circle" size={20} color="#D84315" />
-        )}
-      </TouchableOpacity>
+        {/* Card Option */}
+        <TouchableOpacity
+          style={[
+            styles.methodCard,
+            selectedMethod === 'card' && styles.selectedCard,
+          ]}
+          onPress={() => setSelectedMethod('card')}
+        >
+          <Ionicons name="card-outline" size={24} color="#D84315" />
+          <Text style={styles.methodText}>Debit/Credit Card</Text>
+          {selectedMethod === 'card' && (
+            <Ionicons name="checkmark-circle" size={20} color="#D84315" />
+          )}
+        </TouchableOpacity>
 
-      {/* Pay Button */}
-      <TouchableOpacity style={styles.payButton} onPress={handlePayment}>
-        <Text style={styles.payText}>Pay Now</Text>
-      </TouchableOpacity>
-    </View>
+        {/* Pay Button */}
+        <TouchableOpacity style={styles.payButton} onPress={handlePayment}>
+          <Text style={styles.payText}>Pay Now</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
+    backgroundColor: 'transparent',
     padding: 20,
   },
   backButton: {

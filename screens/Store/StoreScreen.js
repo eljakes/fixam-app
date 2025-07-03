@@ -6,6 +6,9 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
+  SafeAreaView,
+  ImageBackground,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -158,43 +161,51 @@ export default function StoreScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topBar}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        >
-          <Ionicons name="arrow-back" size={24} color="#D84315" />
-        </TouchableOpacity>
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={{ flex: 1 }}
+      imageStyle={{ opacity: 0.07 }}
+    >
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.topBar}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={styles.backButton}
+            >
+              <Ionicons name="arrow-back" size={24} color="#D84315" />
+            </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.savedButton}
-          onPress={() => navigation.navigate('SavedPosts')}
-        >
-          <Ionicons name="bookmark" size={18} color="#D84315" />
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity
+              style={styles.savedButton}
+              onPress={() => navigation.navigate('SavedPosts')}
+            >
+              <Ionicons name="bookmark" size={18} color="#D84315" />
+            </TouchableOpacity>
+          </View>
 
-      <FlatList
-        data={sortedItems}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={{ paddingTop: 90, paddingBottom: 80 }}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+          <FlatList
+            data={sortedItems}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItem}
+            contentContainerStyle={{ paddingTop: 90, paddingBottom: 80 }}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
+    backgroundColor: 'transparent',
     paddingHorizontal: 12,
   },
   topBar: {
     position: 'absolute',
-    top: 50,
+    top: Platform.OS === 'ios' ? 50 : 30,
     width: '100%',
     height: 50,
     backgroundColor: '#FFF3E0',

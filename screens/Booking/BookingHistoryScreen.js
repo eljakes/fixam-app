@@ -1,12 +1,15 @@
+// screens/BookingHistoryScreen.js
 import React, { useEffect, useRef } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   Animated,
   Platform,
   TouchableOpacity,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -48,44 +51,42 @@ export default function BookingHistoryScreen() {
     }).start();
   }, []);
 
-  const handleBack = () => navigation.goBack();
-  const handleHome = () => navigation.navigate('Home');
-
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleBack}>
-          <Ionicons name="arrow-back" size={24} color="#D84315" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Booking History</Text>
-        <View style={{ width: 24 }} />
-      </View>
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={{ flex: 1 }}
+      imageStyle={{ opacity: 0.07 }}
+    >
+      <SafeAreaView style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons name="arrow-back" size={24} color="#D84315" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Booking History</Text>
+          <View style={{ width: 24 }} />
+        </View>
 
-      {/* Animated Content */}
-      <Animated.ScrollView
-        style={{ opacity: fadeAnim }}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {bookings.map((item) => (
-          <View key={item.id} style={styles.card}>
-            <Text style={styles.artisan}>{item.artisan}</Text>
-            <Text style={styles.detail}>
-              {item.date} at {item.time}
-            </Text>
-            <Text style={[styles.status, getStatusStyle(item.status)]}>
-              {item.status}
-            </Text>
-          </View>
-        ))}
-      </Animated.ScrollView>
-
-      {/* Home Button */}
-      <TouchableOpacity onPress={handleHome} style={styles.homeButton}>
-        <Ionicons name="home" size={24} color="#D84315" />
-      </TouchableOpacity>
-    </View>
+        {/* Animated Scroll Content */}
+        <Animated.ScrollView
+          style={{ opacity: fadeAnim }}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {bookings.map((item) => (
+            <View key={item.id} style={styles.card}>
+              <Text style={styles.artisan}>{item.artisan}</Text>
+              <Text style={styles.detail}>
+                {item.date} at {item.time}
+              </Text>
+              <Text style={[styles.status, getStatusStyle(item.status)]}>
+                {item.status}
+              </Text>
+            </View>
+          ))}
+        </Animated.ScrollView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
@@ -102,24 +103,25 @@ const getStatusStyle = (status) => ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
+    backgroundColor: 'transparent',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 60,
+    paddingTop: Platform.OS === 'ios' ? 60 : 40,
     paddingHorizontal: 20,
     marginBottom: 20,
   },
   title: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
-    color: '#BF360C',
+    color: '#D84315',
+    textAlign: 'center',
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingBottom: 100,
+    paddingBottom: 80,
   },
   card: {
     backgroundColor: '#fff',
@@ -129,12 +131,12 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         shadowColor: '#000',
-        shadowOpacity: 0.1,
+        shadowOpacity: 0.08,
         shadowOffset: { width: 0, height: 4 },
         shadowRadius: 8,
       },
       android: {
-        elevation: 4,
+        elevation: 3,
       },
     }),
   },
@@ -151,14 +153,5 @@ const styles = StyleSheet.create({
   status: {
     marginTop: 8,
     fontSize: 14,
-  },
-  homeButton: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    backgroundColor: '#fff',
-    borderRadius: 50,
-    padding: 10,
-    elevation: 4,
   },
 });

@@ -7,6 +7,8 @@ import {
   TextInput,
   Image,
   Platform,
+  ImageBackground,
+  SafeAreaView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
@@ -38,61 +40,76 @@ export default function PostItemScreen() {
   const handleBack = () => navigation.goBack();
 
   return (
-    <View style={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={styles.background}
+      imageStyle={{ opacity: 0.07 }}
+    >
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          {/* Back Button */}
+          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+            <Ionicons name="arrow-back" size={24} color="#D84315" />
+          </TouchableOpacity>
 
-      <Text style={styles.title}>Sell an Item</Text>
+          <Text style={styles.title}>Sell an Item</Text>
 
-      {/* Image Upload Area */}
-      <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
-        {image ? (
-          <Image source={{ uri: image }} style={styles.previewImage} />
-        ) : (
-          <>
-            <Ionicons name="camera" size={48} color="#ccc" />
-            <Text style={styles.imageText}>Tap to upload image</Text>
-          </>
-        )}
-      </TouchableOpacity>
+          {/* Image Upload Area */}
+          <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+            {image ? (
+              <Image source={{ uri: image }} style={styles.previewImage} />
+            ) : (
+              <>
+                <Ionicons name="camera" size={48} color="#ccc" />
+                <Text style={styles.imageText}>Tap to upload image</Text>
+              </>
+            )}
+          </TouchableOpacity>
 
-      {/* Item Name */}
-      <TextInput
-        style={styles.input}
-        placeholder="Item Name"
-        placeholderTextColor="#999"
-      />
+          {/* Item Name */}
+          <TextInput
+            style={styles.input}
+            placeholder="Item Name"
+            placeholderTextColor="#999"
+          />
 
-      {/* Item Price */}
-      <TextInput
-        style={styles.input}
-        placeholder="Price (₵)"
-        placeholderTextColor="#999"
-        keyboardType="numeric"
-      />
+          {/* Item Price */}
+          <TextInput
+            style={styles.input}
+            placeholder="Price (₵)"
+            placeholderTextColor="#999"
+            keyboardType="numeric"
+          />
 
-      {/* Post Button */}
-      <TouchableOpacity style={styles.postButton}>
-        <Text style={styles.postButtonText}>Post Item</Text>
-      </TouchableOpacity>
-    </View>
+          {/* Post Button */}
+          <TouchableOpacity style={styles.postButton}>
+            <Text style={styles.postButtonText}>Post Item</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
+    backgroundColor: 'transparent',
     padding: 20,
     paddingTop: 60,
   },
   backButton: {
     position: 'absolute',
-    top: 50,
+    top: Platform.OS === 'ios' ? 50 : 20,
     left: 16,
     zIndex: 10,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 4,
+    elevation: 2,
   },
   title: {
     fontSize: 24,
@@ -137,6 +154,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 10,
+    elevation: 2,
   },
   postButtonText: {
     color: '#fff',

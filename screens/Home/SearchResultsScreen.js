@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  ImageBackground,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -52,9 +53,7 @@ export default function SearchResultsScreen() {
   const { category, region, area } = route.params || {};
 
   const handleBack = () => navigation.goBack();
-  const handleHome = () => navigation.navigate('Home');
 
-  // ✅ Navigate to ArtisanProfile
   const handleCardPress = (artisan) => {
     navigation.navigate('ArtisanProfile', { artisan });
   };
@@ -74,38 +73,41 @@ export default function SearchResultsScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={styles.background}
+      imageStyle={{ opacity: 0.12 }}
+    >
+      <View style={styles.container}>
+        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#D84315" />
+        </TouchableOpacity>
 
-      <Text style={styles.title}>
-        Showing {category || 'all'} in {area || region || 'Ghana'}
-      </Text>
+        <Text style={styles.title}>
+          Showing {category || 'all'} in {area || region || 'Ghana'}
+        </Text>
 
-      <FlatList
-        data={sampleResults}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={styles.list}
-        ListEmptyComponent={
-          <Text style={styles.empty}>No artisans found in this location.</Text>
-        }
-      />
-
-      {/* Home Button */}
-      <TouchableOpacity onPress={handleHome} style={styles.homeButton}>
-        <Ionicons name="home" size={24} color="#D84315" />
-      </TouchableOpacity>
-    </View>
+        <FlatList
+          data={sampleResults}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={styles.list}
+          ListEmptyComponent={
+            <Text style={styles.empty}>No artisans found in this location.</Text>
+          }
+        />
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
+    backgroundColor: 'transparent',
     paddingTop: 60,
     paddingHorizontal: 16,
   },
@@ -160,14 +162,5 @@ const styles = StyleSheet.create({
     color: '#999',
     marginTop: 40,
     fontSize: 16,
-  },
-  homeButton: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    backgroundColor: '#fff',
-    borderRadius: 50,
-    padding: 10,
-    elevation: 4,
   },
 });

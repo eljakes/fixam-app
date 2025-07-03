@@ -6,6 +6,7 @@ import {
   Animated,
   StyleSheet,
   Text,
+  ImageBackground,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -16,13 +17,21 @@ export default function ClientDashboardScreen() {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const features = [
-    { icon: 'briefcase', label: 'Browse Jobs', screen: 'JobDetails' },
-    { icon: 'chatbubbles', label: 'Chat', screen: 'ChatList' },
-    { icon: 'wallet', label: 'Wallet', screen: 'Wallet' },
-    { icon: 'person', label: 'Profile', screen: 'Profile' },
-    { icon: 'list', label: 'My Orders', screen: 'BookingHistory' },
-    { icon: 'storefront', label: 'Store', screen: 'Store' },
-    { icon: 'settings', label: 'Settings', screen: 'Settings' },
+    {
+      icon: 'briefcase',
+      label: 'Browse Jobs',
+      screen: { tab: 'Home', target: 'BrowseJobs' },
+    },
+    {
+      icon: 'list',
+      label: 'My Orders',
+      screen: 'BookingHistory',
+    },
+    {
+      icon: 'wallet',
+      label: 'Wallet',
+      screen: 'Wallet',
+    },
   ];
 
   useEffect(() => {
@@ -36,48 +45,54 @@ export default function ClientDashboardScreen() {
   const handleBack = () => navigation.navigate('RoleSelection');
 
   return (
-    <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
-      {/* Back Button */}
-      <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
-
-      {/* Feature Cards */}
-      <ScrollView contentContainerStyle={styles.grid}>
-        {features.map((item) => (
-          <Feature
-            key={item.label}
-            icon={item.icon}
-            label={item.label}
-            onPress={() => navigation.navigate(item.screen)}
-          />
-        ))}
-      </ScrollView>
-
-      {/* Post Job + Sell Buttons */}
-      <View style={styles.buttonRow}>
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={() => navigation.navigate('PostJob')}
-        >
-          <Text style={styles.buttonText}>+ Post Job</Text>
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={styles.background}
+      imageStyle={{ opacity: 0.2 }} // 👈 Darker overlay
+    >
+      <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
+        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+          <Ionicons name="arrow-back" size={24} color="#D84315" />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={() => navigation.navigate('PostItem')}
-        >
-          <Text style={styles.buttonText}>+ Sell</Text>
-        </TouchableOpacity>
-      </View>
-    </Animated.View>
+        <ScrollView contentContainerStyle={styles.grid}>
+          {features.map((item) => (
+            <Feature
+              key={item.label}
+              icon={item.icon}
+              label={item.label}
+              onPress={() => {
+                if (typeof item.screen === 'string') {
+                  navigation.navigate(item.screen);
+                } else {
+                  navigation.navigate(item.screen.tab, {
+                    screen: item.screen.target,
+                  });
+                }
+              }}
+            />
+          ))}
+        </ScrollView>
+
+        <View style={styles.buttonRow}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => navigation.navigate('PostJob')}
+          >
+            <Text style={styles.buttonText}>+ Post Job</Text>
+          </TouchableOpacity>
+        </View>
+      </Animated.View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
     paddingTop: 60,
     paddingHorizontal: 16,
   },

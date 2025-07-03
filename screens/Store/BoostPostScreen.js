@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Platform,
+  ImageBackground,
+  SafeAreaView,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Slider from '@react-native-community/slider';
@@ -52,99 +54,116 @@ export default function BoostPostScreen() {
   }, [selectedRegions]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 80 }}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={styles.background}
+      imageStyle={{ opacity: 0.07 }}
+    >
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Back Button */}
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+            <Ionicons name="arrow-back" size={24} color="#D84315" />
+          </TouchableOpacity>
 
-      <Text style={styles.title}>Boost Post</Text>
+          <Text style={styles.title}>Boost Post</Text>
 
-      {/* Duration */}
-      <View style={styles.section}>
-        <Text style={styles.label}>Select Duration (in days)</Text>
-        <Text style={styles.durationValue}>{days.toFixed(0)} day(s)</Text>
-        <Slider
-          minimumValue={1}
-          maximumValue={30}
-          step={1}
-          value={days}
-          onValueChange={setDays}
-          minimumTrackTintColor="#D84315"
-          maximumTrackTintColor="#ccc"
-          thumbTintColor="#D84315"
-          style={styles.slider}
-        />
-      </View>
+          {/* Duration */}
+          <View style={styles.section}>
+            <Text style={styles.label}>Select Duration (in days)</Text>
+            <Text style={styles.durationValue}>{days.toFixed(0)} day(s)</Text>
+            <Slider
+              minimumValue={1}
+              maximumValue={30}
+              step={1}
+              value={days}
+              onValueChange={setDays}
+              minimumTrackTintColor="#D84315"
+              maximumTrackTintColor="#ccc"
+              thumbTintColor="#D84315"
+              style={styles.slider}
+            />
+          </View>
 
-      {/* Reach */}
-      <View style={styles.section}>
-        <Text style={styles.label}>Estimated Reach</Text>
-        <Text style={styles.value}>{estimatedReach.toLocaleString()} people</Text>
-      </View>
+          {/* Reach */}
+          <View style={styles.section}>
+            <Text style={styles.label}>Estimated Reach</Text>
+            <Text style={styles.value}>{estimatedReach.toLocaleString()} people</Text>
+          </View>
 
-      {/* Amount */}
-      <View style={styles.section}>
-        <Text style={styles.label}>Total Amount</Text>
-        <Text style={styles.amount}>GH₵{totalAmount.toFixed(2)}</Text>
-      </View>
+          {/* Amount */}
+          <View style={styles.section}>
+            <Text style={styles.label}>Total Amount</Text>
+            <Text style={styles.amount}>GH₵{totalAmount.toFixed(2)}</Text>
+          </View>
 
-      {/* Region & Area Selection */}
-      <View style={styles.section}>
-        <Text style={styles.label}>Target Regions</Text>
-        <DropDownPicker
-          open={regionOpen}
-          value={selectedRegions}
-          items={regionItems}
-          setOpen={setRegionOpen}
-          setValue={setSelectedRegions}
-          setItems={setRegionItems}
-          multiple={true}
-          placeholder="Select Region(s)"
-          style={styles.dropdown}
-          dropDownContainerStyle={styles.dropdownBox}
-          zIndex={3000}
-        />
-      </View>
+          {/* Region Selection */}
+          <View style={styles.section}>
+            <Text style={styles.label}>Target Regions</Text>
+            <DropDownPicker
+              open={regionOpen}
+              value={selectedRegions}
+              items={regionItems}
+              setOpen={setRegionOpen}
+              setValue={setSelectedRegions}
+              setItems={setRegionItems}
+              multiple={true}
+              placeholder="Select Region(s)"
+              style={styles.dropdown}
+              dropDownContainerStyle={styles.dropdownBox}
+              zIndex={3000}
+            />
+          </View>
 
-      <View style={styles.section}>
-        <Text style={styles.label}>Target Areas</Text>
-        <DropDownPicker
-          open={areaOpen}
-          value={selectedAreas}
-          items={areaItems}
-          setOpen={setAreaOpen}
-          setValue={setSelectedAreas}
-          setItems={setAreaItems}
-          multiple={true}
-          placeholder="Select Area(s)"
-          style={styles.dropdown}
-          dropDownContainerStyle={styles.dropdownBox}
-          zIndex={2000}
-          disabled={selectedRegions.length === 0}
-        />
-      </View>
+          {/* Area Selection */}
+          <View style={styles.section}>
+            <Text style={styles.label}>Target Areas</Text>
+            <DropDownPicker
+              open={areaOpen}
+              value={selectedAreas}
+              items={areaItems}
+              setOpen={setAreaOpen}
+              setValue={setSelectedAreas}
+              setItems={setAreaItems}
+              multiple={true}
+              placeholder="Select Area(s)"
+              style={styles.dropdown}
+              dropDownContainerStyle={styles.dropdownBox}
+              zIndex={2000}
+              disabled={selectedRegions.length === 0}
+            />
+          </View>
 
-      {/* Proceed */}
-      <TouchableOpacity
-        style={styles.payButton}
-        onPress={() => navigation.navigate('BoostPayment', { amount: totalAmount })}
-      >
-        <Text style={styles.payText}>Proceed to Payment</Text>
-      </TouchableOpacity>
-    </ScrollView>
+          {/* Proceed to Payment */}
+          <TouchableOpacity
+            style={styles.payButton}
+            onPress={() => navigation.navigate('BoostPayment', { amount: totalAmount })}
+          >
+            <Text style={styles.payText}>Proceed to Payment</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
-    backgroundColor: '#FFF3E0',
+    backgroundColor: 'transparent',
     padding: 20,
   },
   backButton: {
     position: 'absolute',
-    top: 50,
+    top: Platform.OS === 'ios' ? 50 : 20,
     left: 16,
-    zIndex: 2,
+    zIndex: 5,
     backgroundColor: '#fff',
     borderRadius: 20,
     padding: 4,
@@ -196,15 +215,11 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
   },
   payButton: {
-    marginTop: 30,
+    marginTop: 20,
     backgroundColor: '#D84315',
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 4,
     elevation: 4,
   },
   payText: {

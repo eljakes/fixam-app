@@ -8,6 +8,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
+  ImageBackground,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -49,7 +50,7 @@ export default function BrowseJobsScreen() {
 
   useEffect(() => {
     if (region) {
-      setArea(null); // reset area when region changes
+      setArea(null);
       setAreaItems(ghanaRegions[region].map((a) => ({ label: a, value: a })));
     }
   }, [region]);
@@ -59,7 +60,6 @@ export default function BrowseJobsScreen() {
   );
 
   const handleBack = () => navigation.goBack();
-  const handleHome = () => navigation.navigate('Home');
 
   const handleCategoryPress = (category) => {
     navigation.navigate('SearchResults', {
@@ -77,76 +77,79 @@ export default function BrowseJobsScreen() {
   );
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={styles.background}
+      imageStyle={{ opacity: 0.12 }}
     >
-      {/* Back Button */}
-      <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        {/* Back Button */}
+        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#D84315" />
+        </TouchableOpacity>
 
-      <Text style={styles.title}>Browse Jobs</Text>
+        <Text style={styles.title}>Browse Jobs</Text>
 
-      {/* Search Input */}
-      <TextInput
-        style={styles.input}
-        placeholder="I’m looking for..."
-        placeholderTextColor="#888"
-        value={search}
-        onChangeText={setSearch}
-      />
+        {/* Search Input */}
+        <TextInput
+          style={styles.input}
+          placeholder="I’m looking for..."
+          placeholderTextColor="#888"
+          value={search}
+          onChangeText={setSearch}
+        />
 
-      {/* Region Dropdown */}
-      <DropDownPicker
-        open={openRegion}
-        value={region}
-        items={regionItems}
-        setOpen={setOpenRegion}
-        setValue={setRegion}
-        setItems={setRegionItems}
-        placeholder="Select Region"
-        style={styles.dropdown}
-        dropDownContainerStyle={styles.dropdownBox}
-        zIndex={3000}
-      />
+        {/* Region Dropdown */}
+        <DropDownPicker
+          open={openRegion}
+          value={region}
+          items={regionItems}
+          setOpen={setOpenRegion}
+          setValue={setRegion}
+          setItems={setRegionItems}
+          placeholder="Select Region"
+          style={styles.dropdown}
+          dropDownContainerStyle={styles.dropdownBox}
+          zIndex={3000}
+        />
 
-      {/* Area Dropdown */}
-      <DropDownPicker
-        open={openArea}
-        value={area}
-        items={areaItems}
-        setOpen={setOpenArea}
-        setValue={setArea}
-        setItems={setAreaItems}
-        placeholder="Select Area"
-        style={styles.dropdown}
-        dropDownContainerStyle={styles.dropdownBox}
-        disabled={!region}
-        zIndex={2000}
-      />
+        {/* Area Dropdown */}
+        <DropDownPicker
+          open={openArea}
+          value={area}
+          items={areaItems}
+          setOpen={setOpenArea}
+          setValue={setArea}
+          setItems={setAreaItems}
+          placeholder="Select Area"
+          style={styles.dropdown}
+          dropDownContainerStyle={styles.dropdownBox}
+          disabled={!region}
+          zIndex={2000}
+        />
 
-      {/* Job Grid */}
-      <FlatList
-        data={filteredCategories}
-        keyExtractor={(item) => item}
-        renderItem={renderItem}
-        numColumns={2}
-        contentContainerStyle={styles.grid}
-      />
-
-      {/* Home Button */}
-      <TouchableOpacity onPress={handleHome} style={styles.homeButton}>
-        <Ionicons name="home" size={24} color="#D84315" />
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
+        {/* Job Grid */}
+        <FlatList
+          data={filteredCategories}
+          keyExtractor={(item) => item}
+          renderItem={renderItem}
+          numColumns={2}
+          contentContainerStyle={styles.grid}
+        />
+      </KeyboardAvoidingView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
     paddingHorizontal: 20,
     paddingTop: 60,
   },
@@ -198,14 +201,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
     fontWeight: '600',
-  },
-  homeButton: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    backgroundColor: '#fff',
-    borderRadius: 50,
-    padding: 10,
-    elevation: 4,
   },
 });

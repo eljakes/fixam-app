@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  ImageBackground,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -17,56 +18,63 @@ export default function PostJobScreen() {
   const [location, setLocation] = useState('');
 
   const handlePostJob = () => {
-    // Firestore logic will be added later
     alert('Job posted successfully!');
     navigation.goBack();
   };
 
   return (
-    <View style={styles.wrapper}>
-      {/* Back Button */}
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
-
-      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Post a Job</Text>
-
-        <TextInput
-          style={styles.input}
-          placeholder="Job Title"
-          placeholderTextColor="#999"
-          value={title}
-          onChangeText={setTitle}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Job Description"
-          placeholderTextColor="#999"
-          value={description}
-          onChangeText={setDescription}
-          multiline
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Location"
-          placeholderTextColor="#999"
-          value={location}
-          onChangeText={setLocation}
-        />
-
-        <TouchableOpacity style={styles.postButton} onPress={handlePostJob}>
-          <Text style={styles.postButtonText}>Post Job</Text>
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={styles.background}
+      imageStyle={{ opacity: 0.1 }}
+    >
+      <View style={styles.wrapper}>
+        {/* Back Button */}
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#D84315" />
         </TouchableOpacity>
-      </ScrollView>
-    </View>
+
+        <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+          <Text style={styles.title}>Post a Job</Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Job Title"
+            placeholderTextColor="#999"
+            value={title}
+            onChangeText={setTitle}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Job Description"
+            placeholderTextColor="#999"
+            value={description}
+            onChangeText={setDescription}
+            multiline
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Location"
+            placeholderTextColor="#999"
+            value={location}
+            onChangeText={setLocation}
+          />
+
+          <TouchableOpacity style={styles.postButton} onPress={handlePostJob}>
+            <Text style={styles.postButtonText}>Post Job</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   wrapper: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
     paddingTop: 60,
   },
   backButton: {
@@ -81,7 +89,7 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 20,
-    paddingTop: 80, // space for back button
+    paddingTop: 80,
     paddingBottom: 40,
   },
   title: {

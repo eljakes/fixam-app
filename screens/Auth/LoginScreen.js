@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  ImageBackground,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,78 +22,84 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Back Arrow */}
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.backButton}
-      >
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
-
-      <Text style={styles.title}>Login</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Email or Phone"
-        placeholderTextColor="#999"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        keyboardType="email-address"
-      />
-
-      <View style={styles.passwordContainer}>
-        <TextInput
-          style={styles.passwordInput}
-          placeholder="Password"
-          placeholderTextColor="#999"
-          secureTextEntry={!showPassword}
-          value={password}
-          onChangeText={setPassword}
-        />
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={{ flex: 1 }}
+      imageStyle={{ opacity: 0.2 }} // 👈 subtle dark background
+    >
+      <View style={styles.container}>
+        {/* Back Arrow */}
         <TouchableOpacity
-          onPress={() => setShowPassword(!showPassword)}
-          style={styles.eyeIcon}
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
         >
-          <Ionicons
-            name={showPassword ? 'eye' : 'eye-off'}
-            size={20}
-            color="#888"
+          <Ionicons name="arrow-back" size={24} color="#D84315" />
+        </TouchableOpacity>
+
+        <Text style={styles.title}>Login</Text>
+
+        <TextInput
+          style={styles.input}
+          placeholder="Email or Phone"
+          placeholderTextColor="#999"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+        />
+
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Password"
+            placeholderTextColor="#999"
+            secureTextEntry={!showPassword}
+            value={password}
+            onChangeText={setPassword}
           />
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={styles.eyeIcon}
+          >
+            <Ionicons
+              name={showPassword ? 'eye' : 'eye-off'}
+              size={20}
+              color="#888"
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/* Forgot Password */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ForgotPassword')}
+          style={{ marginTop: 6, alignSelf: 'flex-end' }}
+        >
+          <Text style={{ color: '#D84315', fontSize: 13, fontWeight: '500' }}>
+            Forgot Password?
+          </Text>
+        </TouchableOpacity>
+
+        {/* Login Button */}
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Log In</Text>
+        </TouchableOpacity>
+
+        {/* Switch to Signup */}
+        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+          <Text style={styles.switchText}>
+            Don’t have an account?{' '}
+            <Text style={{ color: '#D84315', fontWeight: '600' }}>Sign up</Text>
+          </Text>
         </TouchableOpacity>
       </View>
-
-      {/* Forgot Password */}
-      <TouchableOpacity
-        onPress={() => navigation.navigate('ForgotPassword')}
-        style={{ marginTop: 6, alignSelf: 'flex-end' }}
-      >
-        <Text style={{ color: '#D84315', fontSize: 13, fontWeight: '500' }}>
-          Forgot Password?
-        </Text>
-      </TouchableOpacity>
-
-      {/* Login Button */}
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Log In</Text>
-      </TouchableOpacity>
-
-      {/* Switch to Signup */}
-      <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-        <Text style={styles.switchText}>
-          Don’t have an account?{' '}
-          <Text style={{ color: '#D84315', fontWeight: '600' }}>Sign up</Text>
-        </Text>
-      </TouchableOpacity>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
+    backgroundColor: 'transparent',
     paddingHorizontal: 20,
     paddingTop: 80,
   },

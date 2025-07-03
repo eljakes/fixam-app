@@ -8,19 +8,19 @@ export default function RoleRedirectScreen() {
 
   useEffect(() => {
     const checkRole = async () => {
-      const role = await AsyncStorage.getItem('userRole');
+      try {
+        const role = await AsyncStorage.getItem('userRole');
 
-      if (role === 'client') {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'ClientDashboard' }],
-        });
-      } else if (role === 'artisan') {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'ArtisanDashboard' }],
-        });
-      } else {
+        if (role === 'client' || role === 'artisan') {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'MainTabs' }],
+          });
+        } else {
+          navigation.navigate('RoleSelection');
+        }
+      } catch (err) {
+        console.error('Error reading role from storage:', err);
         navigation.navigate('RoleSelection');
       }
     };

@@ -8,6 +8,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  ImageBackground,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -29,120 +30,119 @@ export default function WithdrawScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={{ flex: 1 }}
+      imageStyle={{ opacity: 0.07 }}
     >
-      {/* Back Arrow */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons name="arrow-back" size={24} color="#D84315" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Withdraw Funds</Text>
+          <View style={{ width: 24 }} />
+        </View>
 
-      <Text style={styles.title}>Withdraw Funds</Text>
+        <View style={styles.card}>
+          <Text style={styles.label}>Amount (GHS)</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="₵100"
+            keyboardType="numeric"
+            value={amount}
+            onChangeText={setAmount}
+          />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Enter amount (₵)"
-        keyboardType="numeric"
-        value={amount}
-        onChangeText={setAmount}
-      />
+          <Text style={styles.label}>Withdrawal Method</Text>
+          <View style={styles.pickerWrapper}>
+            <Picker
+              selectedValue={method}
+              onValueChange={(itemValue) => setMethod(itemValue)}
+            >
+              <Picker.Item label="-- Select Method --" value="" />
+              <Picker.Item label="Mobile Money" value="MoMo" />
+              <Picker.Item label="Card" value="Card" />
+              <Picker.Item label="Bank Transfer" value="Bank" />
+            </Picker>
+          </View>
 
-      <Text style={styles.label}>Withdrawal Method</Text>
-      <View style={styles.pickerWrapper}>
-        <Picker
-          selectedValue={method}
-          onValueChange={(itemValue) => setMethod(itemValue)}
-        >
-          <Picker.Item label="-- Select Method --" value="" />
-          <Picker.Item label="Mobile Money" value="MoMo" />
-          <Picker.Item label="Card" value="Card" />
-          <Picker.Item label="Bank Transfer" value="Bank" />
-        </Picker>
-      </View>
+          <Text style={styles.label}>Account / Wallet Number</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="e.g. 0551234567"
+            keyboardType="number-pad"
+            value={accountNumber}
+            onChangeText={setAccountNumber}
+          />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Account / Wallet Number"
-        keyboardType="number-pad"
-        value={accountNumber}
-        onChangeText={setAccountNumber}
-      />
-
-      <TouchableOpacity style={styles.withdrawButton} onPress={handleWithdraw}>
-        <Text style={styles.withdrawText}>Withdraw Now</Text>
-      </TouchableOpacity>
-
-      {/* Home Button */}
-      <TouchableOpacity style={styles.homeButton} onPress={() => navigation.navigate('Home')}>
-        <Ionicons name="home" size={24} color="#D84315" />
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
+          <TouchableOpacity style={styles.button} onPress={handleWithdraw}>
+            <Text style={styles.buttonText}>Withdraw Now</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
-    padding: 24,
+    backgroundColor: 'transparent',
+    paddingHorizontal: 20,
     paddingTop: 60,
   },
-  backButton: {
-    position: 'absolute',
-    top: 50,
-    left: 16,
-    zIndex: 10,
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   title: {
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: 'bold',
-    color: '#BF360C',
-    marginBottom: 30,
-    textAlign: 'center',
+    color: '#D84315',
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 18,
+    padding: 20,
+    elevation: 3,
   },
   label: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
+    color: '#666',
     marginBottom: 6,
-    marginTop: 8,
+    fontWeight: '600',
+    marginTop: 16,
   },
   input: {
-    backgroundColor: '#fff',
+    backgroundColor: '#fafafa',
     padding: 14,
     borderRadius: 10,
-    fontSize: 16,
-    marginBottom: 16,
     borderWidth: 1,
     borderColor: '#ccc',
+    fontSize: 16,
   },
   pickerWrapper: {
     backgroundColor: '#fff',
     borderRadius: 10,
-    marginBottom: 16,
-    borderColor: '#ccc',
     borderWidth: 1,
+    borderColor: '#ccc',
   },
-  withdrawButton: {
+  button: {
     backgroundColor: '#D84315',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 30,
   },
-  withdrawText: {
+  buttonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600',
-  },
-  homeButton: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    backgroundColor: '#fff',
-    borderRadius: 50,
-    padding: 10,
-    elevation: 4,
+    fontWeight: 'bold',
   },
 });

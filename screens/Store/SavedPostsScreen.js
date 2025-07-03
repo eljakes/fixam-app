@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,9 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
+  SafeAreaView,
+  ImageBackground,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -13,7 +16,6 @@ import { useNavigation } from '@react-navigation/native';
 export default function SavedPostsScreen() {
   const navigation = useNavigation();
 
-  // Dummy saved items – replace with Firestore data later
   const [savedItems, setSavedItems] = useState([
     {
       id: '1',
@@ -47,36 +49,47 @@ export default function SavedPostsScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.backButton}
-      >
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={styles.background}
+      imageStyle={{ opacity: 0.07 }}
+    >
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          {/* Back Button */}
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
+            <Ionicons name="arrow-back" size={24} color="#D84315" />
+          </TouchableOpacity>
 
-      <Text style={styles.header}>Saved Posts</Text>
+          <Text style={styles.header}>Saved Posts</Text>
 
-      <FlatList
-        data={savedItems}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={{ paddingBottom: 80 }}
-      />
-    </View>
+          <FlatList
+            data={savedItems}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItem}
+            contentContainerStyle={{ paddingBottom: 80 }}
+          />
+        </View>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
+    backgroundColor: 'transparent',
     padding: 16,
   },
   backButton: {
     position: 'absolute',
-    top: 50,
+    top: Platform.OS === 'ios' ? 50 : 20,
     left: 16,
     zIndex: 2,
     backgroundColor: '#fff',

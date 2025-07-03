@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  ImageBackground,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -26,37 +27,45 @@ export default function ForgotPasswordScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={{ flex: 1 }}
+      imageStyle={{ opacity: 0.2 }}
+    >
+      <View style={styles.container}>
+        {/* Back Arrow */}
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#D84315" />
+        </TouchableOpacity>
 
-      <Text style={styles.title}>Forgot Password</Text>
-      <Text style={styles.subtitle}>
-        Enter your email and we’ll send you a password reset link.
-      </Text>
+        {/* Slightly lifted content */}
+        <View style={styles.centerContent}>
+          <Text style={styles.subtitle}>
+            Enter your email and we’ll send you a password reset link.
+          </Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Email address"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-      />
+          <TextInput
+            style={styles.input}
+            placeholder="Email address"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+          />
 
-      <TouchableOpacity style={styles.button} onPress={handleReset}>
-        <Text style={styles.buttonText}>Send Reset Link</Text>
-      </TouchableOpacity>
-    </View>
+          <TouchableOpacity style={styles.button} onPress={handleReset}>
+            <Text style={styles.buttonText}>Send Reset Link</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
-    padding: 20,
-    paddingTop: 80,
+    backgroundColor: 'transparent',
+    paddingHorizontal: 20,
   },
   backButton: {
     position: 'absolute',
@@ -66,17 +75,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 4,
     elevation: 3,
+    zIndex: 10,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#BF360C',
-    marginBottom: 12,
+  centerContent: {
+    flex: 1,
+    justifyContent: 'center',
+    marginTop: -60, // 👈 pushes content slightly upwards from center
   },
   subtitle: {
     fontSize: 14,
     color: '#555',
     marginBottom: 24,
+    textAlign: 'center',
   },
   input: {
     backgroundColor: '#fff',

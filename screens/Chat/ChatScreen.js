@@ -1,5 +1,4 @@
-// ✅ ChatScreen.js
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -21,7 +20,11 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 export default function ChatScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { name, avatar } = route.params || { name: 'Unknown User', avatar: null };
+
+  const {
+    name = 'Unknown User',
+    avatar = 'https://via.placeholder.com/100x100.png?text=User',
+  } = route?.params || {};
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -96,20 +99,20 @@ export default function ChatScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={90}
     >
-      {/* ✅ Top Bar with User Info */}
+      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#D84315" />
         </TouchableOpacity>
         <View style={styles.userSection}>
-          {avatar && <Image source={{ uri: avatar }} style={styles.avatar} />}
+          <Image source={{ uri: avatar }} style={styles.avatar} />
           <Text style={styles.userName}>{name}</Text>
         </View>
         <View style={styles.callIcons}>
-          <TouchableOpacity onPress={() => alert('Audio call initiated')}>
+          <TouchableOpacity onPress={() => alert('Audio call')}>
             <Ionicons name="call" size={22} color="#D84315" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => alert('Video call initiated')}>
+          <TouchableOpacity onPress={() => alert('Video call')}>
             <Ionicons name="videocam" size={22} color="#D84315" />
           </TouchableOpacity>
         </View>
@@ -136,7 +139,7 @@ export default function ChatScreen() {
         />
       )}
 
-      {/* Modal for + Menu */}
+      {/* Modal for Attachment Options */}
       <Modal visible={menuVisible} transparent animationType="slide">
         <TouchableOpacity style={styles.modalOverlay} onPress={() => setMenuVisible(false)}>
           <View style={styles.menu}>
@@ -164,7 +167,6 @@ export default function ChatScreen() {
         <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.iconButton}>
           <Entypo name="plus" size={24} color="#D84315" />
         </TouchableOpacity>
-
         <TouchableOpacity
           onPress={() => {
             Keyboard.dismiss();
@@ -174,7 +176,6 @@ export default function ChatScreen() {
         >
           <Entypo name="emoji-happy" size={24} color="#D84315" />
         </TouchableOpacity>
-
         <TextInput
           style={styles.input}
           placeholder="Type a message"
@@ -182,11 +183,9 @@ export default function ChatScreen() {
           value={input}
           onChangeText={setInput}
         />
-
         <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
           <Ionicons name="send" size={20} color="#fff" />
         </TouchableOpacity>
-
         <TouchableOpacity style={styles.iconButton}>
           <FontAwesome name="microphone" size={24} color="#D84315" />
         </TouchableOpacity>
@@ -197,8 +196,6 @@ export default function ChatScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FFF3E0' },
-
-  // ✅ Chat header
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -230,11 +227,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 12,
   },
-  icon: {
-    padding: 4,
-  },
-
-  // ✅ Messages
   messages: {
     padding: 16,
     paddingBottom: 100,
@@ -248,11 +240,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     alignSelf: 'flex-start',
     backgroundColor: '#FFE0B2',
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
   },
   userMessage: {
     alignSelf: 'flex-end',
@@ -274,8 +261,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 6,
   },
-
-  // ✅ Input
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -305,8 +290,6 @@ const styles = StyleSheet.create({
   iconButton: {
     padding: 6,
   },
-
-  // ✅ Modal
   modalOverlay: {
     flex: 1,
     backgroundColor: '#00000088',

@@ -2,191 +2,188 @@ import React from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
-  FlatList,
+  StyleSheet,
   SafeAreaView,
+  ScrollView,
+  Platform,
+  ImageBackground,
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-const transactions = [
-  { id: '1', title: 'Deposit via MoMo', amount: '+₵100', date: 'Jun 26', type: 'credit' },
-  { id: '2', title: 'Job Payment', amount: '-₵40', date: 'Jun 25', type: 'debit' },
-  { id: '3', title: 'Withdrawal to Bank', amount: '-₵30', date: 'Jun 24', type: 'debit' },
-];
-
 export default function WalletScreen() {
   const navigation = useNavigation();
 
+  const handleBack = () => navigation.goBack();
+  const handleDeposit = () => navigation.navigate('Deposit');
+  const handleWithdraw = () => navigation.navigate('Withdraw');
+  const handleMakePayment = () => navigation.navigate('MakePayment');
+  const handleLinkAccount = () => navigation.navigate('LinkAccount');
+
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Back + Home Buttons */}
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#D84315" />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.homeButton}>
-        <Ionicons name="home" size={24} color="#D84315" />
-      </TouchableOpacity>
-
-      <Text style={styles.title}>My Wallet</Text>
-
-      <View style={styles.balanceCard}>
-        <Text style={styles.balanceLabel}>Current Balance</Text>
-        <Text style={styles.balanceAmount}>₵250.00</Text>
-      </View>
-
-      {/* Wallet Actions */}
-      <View style={styles.actions}>
-        <TouchableOpacity style={styles.actionBtn} onPress={() => navigation.navigate('Deposit')}>
-          <Ionicons name="add-circle" size={24} color="#fff" />
-          <Text style={styles.actionText}>Deposit</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.actionBtn} onPress={() => navigation.navigate('Withdraw')}>
-          <Ionicons name="arrow-down-circle" size={24} color="#fff" />
-          <Text style={styles.actionText}>Withdraw</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.actionBtn} onPress={() => navigation.navigate('LinkAccount')}>
-          <Ionicons name="link" size={24} color="#fff" />
-          <Text style={styles.actionText}>Link Account</Text>
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity style={styles.paymentBtn} onPress={() => navigation.navigate('MakePayment')}>
-        <Ionicons name="cash-outline" size={22} color="#fff" />
-        <Text style={styles.paymentText}>Make Payment</Text>
-      </TouchableOpacity>
-
-      {/* Recent Transactions */}
-      <Text style={styles.sectionTitle}>Recent Transactions</Text>
-
-      <FlatList
-        data={transactions}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.transaction}>
-            <MaterialIcons
-              name={item.type === 'credit' ? 'arrow-downward' : 'arrow-upward'}
-              size={20}
-              color={item.type === 'credit' ? 'green' : 'red'}
-            />
-            <View style={{ flex: 1, marginLeft: 12 }}>
-              <Text style={styles.txTitle}>{item.title}</Text>
-              <Text style={styles.txDate}>{item.date}</Text>
-            </View>
-            <Text style={[styles.txAmount, { color: item.type === 'credit' ? 'green' : 'red' }]}>
-              {item.amount}
-            </Text>
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={{ flex: 1 }}
+      imageStyle={{ opacity: 0.2 }} // 👈 darker effect
+    >
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView contentContainerStyle={styles.container}>
+          {/* Header */}
+          <View style={styles.header}>
+            <TouchableOpacity onPress={handleBack}>
+              <Ionicons name="arrow-back" size={26} color="#333" />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle}>My Wallet</Text>
+            <View style={{ width: 26 }} />
           </View>
-        )}
-      />
-    </SafeAreaView>
+
+          {/* Balance Section */}
+          <View style={styles.balanceCard}>
+            <Text style={styles.balanceLabel}>Total Balance</Text>
+            <Text style={styles.balanceAmount}>GH₵ 1,250.00</Text>
+            <View style={styles.balanceActions}>
+              <TouchableOpacity style={styles.balanceAction} onPress={handleDeposit}>
+                <MaterialIcons name="arrow-downward" size={22} color="#D84315" />
+                <Text style={styles.actionLabel}>Deposit</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.balanceAction} onPress={handleWithdraw}>
+                <MaterialIcons name="arrow-upward" size={22} color="#D84315" />
+                <Text style={styles.actionLabel}>Withdraw</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Quick Actions */}
+          <View style={styles.quickActions}>
+            <TouchableOpacity style={styles.quickActionCard} onPress={handleMakePayment}>
+              <Ionicons name="card" size={28} color="#D84315" />
+              <Text style={styles.quickLabel}>Make Payment</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.quickActionCard} onPress={handleLinkAccount}>
+              <Ionicons name="link" size={28} color="#D84315" />
+              <Text style={styles.quickLabel}>Link Account</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Recent Transactions */}
+          <Text style={styles.sectionTitle}>Recent Activity</Text>
+          <View style={styles.transactionCard}>
+            <Text style={styles.transactionText}>+ GH₵ 200.00 - Deposit via MoMo</Text>
+            <Text style={styles.transactionDate}>June 30, 2025</Text>
+          </View>
+          <View style={styles.transactionCard}>
+            <Text style={styles.transactionText}>- GH₵ 50.00 - Withdrawal to Card</Text>
+            <Text style={styles.transactionDate}>June 28, 2025</Text>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
+    backgroundColor: 'transparent',
+  },
+  container: {
     padding: 20,
+    paddingBottom: 100,
   },
-  title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    color: '#BF360C',
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: Platform.OS === 'android' ? 40 : 0,
     marginBottom: 20,
-    textAlign: 'center',
   },
-  backButton: {
-    position: 'absolute',
-    top: 50,
-    left: 16,
-    zIndex: 10,
-  },
-  homeButton: {
-    position: 'absolute',
-    top: 50,
-    right: 16,
-    zIndex: 10,
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#D84315',
   },
   balanceCard: {
-    backgroundColor: '#D84315',
-    padding: 20,
-    borderRadius: 16,
-    marginBottom: 20,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 24,
     alignItems: 'center',
+    marginBottom: 30,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 10,
   },
   balanceLabel: {
-    color: '#fff',
     fontSize: 16,
+    color: '#888',
+    marginBottom: 10,
   },
   balanceAmount: {
-    color: '#fff',
     fontSize: 32,
     fontWeight: 'bold',
-    marginTop: 6,
+    color: '#D84315',
+    marginBottom: 20,
   },
-  actions: {
+  balanceActions: {
+    flexDirection: 'row',
+    gap: 30,
+  },
+  balanceAction: {
+    alignItems: 'center',
+  },
+  actionLabel: {
+    marginTop: 6,
+    color: '#333',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  quickActions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 30,
+    gap: 16,
   },
-  actionBtn: {
-    backgroundColor: '#D84315',
-    borderRadius: 12,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
+  quickActionCard: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingVertical: 24,
+    borderRadius: 16,
     alignItems: 'center',
-    width: '31%',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 5,
   },
-  actionText: {
-    color: '#fff',
-    fontSize: 14,
-    marginTop: 6,
-    textAlign: 'center',
-  },
-  paymentBtn: {
-    flexDirection: 'row',
-    backgroundColor: '#BF360C',
-    borderRadius: 10,
-    padding: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  paymentText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 10,
+  quickLabel: {
+    marginTop: 10,
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#444',
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontWeight: '600',
     color: '#333',
+    marginBottom: 10,
   },
-  transaction: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  transactionCard: {
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 14,
+    padding: 16,
     marginBottom: 12,
     elevation: 1,
   },
-  txTitle: {
-    fontSize: 16,
-    color: '#333',
+  transactionText: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#444',
   },
-  txDate: {
-    fontSize: 12,
-    color: '#888',
-  },
-  txAmount: {
-    fontSize: 16,
-    fontWeight: 'bold',
+  transactionDate: {
+    fontSize: 13,
+    color: '#777',
+    marginTop: 4,
   },
 });

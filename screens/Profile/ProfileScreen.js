@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+// screens/ProfileScreen.js
+import React from 'react';
 import {
   View,
   Text,
-  TextInput,
-  TouchableOpacity,
   StyleSheet,
+  TouchableOpacity,
+  Image,
+  Platform,
+  ImageBackground,
   SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -13,146 +16,144 @@ import { useNavigation } from '@react-navigation/native';
 export default function ProfileScreen() {
   const navigation = useNavigation();
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [profile, setProfile] = useState({
-    name: 'Elvis Owusu-Sekyere',
-    email: 'elvis@example.com',
-    phone: '+233 24 000 0000',
-    bio: 'Plumber & Electrician. I love fixing things!',
-  });
+  const handleEditProfile = () => {
+    navigation.navigate('Home', { screen: 'EditProfile' });
+  };
 
-  const handleSave = () => {
-    setIsEditing(false);
-    // Later: Sync with backend (e.g., Firebase)
+  const handleGoBack = () => {
+    navigation.goBack();
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Ionicons name="arrow-back" size={28} color="#D84315" />
-      </TouchableOpacity>
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={{ flex: 1 }}
+      imageStyle={{ opacity: 0.05 }}
+    >
+      <SafeAreaView style={styles.container}>
+        {/* Back Button */}
+        <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#D84315" />
+        </TouchableOpacity>
 
-      <Text style={styles.title}>My Profile</Text>
+        {/* Profile Picture */}
+        <View style={styles.profileImageWrapper}>
+          <Image
+            source={{
+              uri: 'https://randomuser.me/api/portraits/men/75.jpg',
+            }}
+            style={styles.profileImage}
+          />
+        </View>
 
-      <View style={styles.fieldContainer}>
-        <Text style={styles.label}>Name</Text>
-        <TextInput
-          value={profile.name}
-          onChangeText={(text) => setProfile({ ...profile, name: text })}
-          editable={isEditing}
-          style={styles.input}
-        />
-      </View>
+        {/* Name */}
+        <Text style={styles.name}>Elvis Owusu-Sekyere</Text>
 
-      <View style={styles.fieldContainer}>
-        <Text style={styles.label}>Email</Text>
-        <TextInput
-          value={profile.email}
-          onChangeText={(text) => setProfile({ ...profile, email: text })}
-          editable={isEditing}
-          style={styles.input}
-        />
-      </View>
+        {/* Bio */}
+        <Text style={styles.bio}>
+          Passionate software developer and FixAm user. Love solving problems and connecting with artisans.
+        </Text>
 
-      <View style={styles.fieldContainer}>
-        <Text style={styles.label}>Phone</Text>
-        <TextInput
-          value={profile.phone}
-          onChangeText={(text) => setProfile({ ...profile, phone: text })}
-          editable={isEditing}
-          style={styles.input}
-        />
-      </View>
+        {/* Stats */}
+        <View style={styles.statsContainer}>
+          <View style={styles.stat}>
+            <Text style={styles.statNumber}>25</Text>
+            <Text style={styles.statLabel}>Jobs</Text>
+          </View>
+          <View style={styles.stat}>
+            <Text style={styles.statNumber}>4.8</Text>
+            <Text style={styles.statLabel}>Rating</Text>
+          </View>
+          <View style={styles.stat}>
+            <Text style={styles.statNumber}>12</Text>
+            <Text style={styles.statLabel}>Reviews</Text>
+          </View>
+        </View>
 
-      <View style={styles.fieldContainer}>
-        <Text style={styles.label}>Bio</Text>
-        <TextInput
-          value={profile.bio}
-          onChangeText={(text) => setProfile({ ...profile, bio: text })}
-          editable={isEditing}
-          multiline
-          numberOfLines={3}
-          style={[styles.input, { height: 80, textAlignVertical: 'top' }]}
-        />
-      </View>
-
-      <TouchableOpacity
-        style={styles.editButton}
-        onPress={isEditing ? handleSave : () => setIsEditing(true)}
-      >
-        <Text style={styles.editText}>{isEditing ? 'Save' : 'Edit Profile'}</Text>
-      </TouchableOpacity>
-
-      {/* Home Button */}
-      <TouchableOpacity
-        style={styles.homeButton}
-        onPress={() => navigation.navigate('Home')}
-      >
-        <Ionicons name="home" size={28} color="#D84315" />
-      </TouchableOpacity>
-    </SafeAreaView>
+        {/* Edit Profile Button */}
+        <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
+          <Ionicons name="create-outline" size={20} color="#fff" />
+          <Text style={styles.editButtonText}>Edit Profile</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
-    padding: 24,
-    paddingTop: 60,
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    paddingTop: Platform.OS === 'ios' ? 60 : 40,
+    paddingHorizontal: 20,
   },
   backButton: {
     position: 'absolute',
-    top: 40,
+    top: Platform.OS === 'ios' ? 50 : 30,
     left: 20,
-    zIndex: 10,
-  },
-  homeButton: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
+    zIndex: 2,
     backgroundColor: '#fff',
-    padding: 10,
-    borderRadius: 30,
-    elevation: 2,
+    borderRadius: 20,
+    padding: 6,
+    elevation: 3,
   },
-  title: {
-    fontSize: 26,
+  profileImageWrapper: {
+    borderWidth: 3,
+    borderColor: '#D84315',
+    borderRadius: 60,
+    padding: 4,
+    marginTop: 60,
+    marginBottom: 16,
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  name: {
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#BF360C',
+    marginBottom: 8,
+  },
+  bio: {
+    fontSize: 14,
+    color: '#555',
     textAlign: 'center',
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '90%',
     marginBottom: 30,
   },
-  fieldContainer: {
-    marginBottom: 18,
+  stat: {
+    alignItems: 'center',
   },
-  label: {
-    fontSize: 14,
-    color: '#888',
-    marginBottom: 6,
+  statNumber: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#D84315',
   },
-  input: {
-    backgroundColor: '#fff',
-    padding: 14,
-    borderRadius: 10,
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: '#DDD',
+  statLabel: {
+    fontSize: 12,
+    color: '#555',
   },
   editButton: {
+    flexDirection: 'row',
     backgroundColor: '#D84315',
-    paddingVertical: 14,
-    borderRadius: 10,
-    marginTop: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 30,
+    alignItems: 'center',
   },
-  editText: {
+  editButtonText: {
     color: '#fff',
     fontSize: 16,
-    textAlign: 'center',
+    marginLeft: 8,
     fontWeight: '600',
   },
 });

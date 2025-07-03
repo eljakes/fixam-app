@@ -1,126 +1,108 @@
-// screens/Orders/OrdersScreen.js
-import React, { useState } from 'react';
+// screens/ProfileScreen.js
+import React from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
-  FlatList,
   StyleSheet,
+  Image,
+  TouchableOpacity,
   SafeAreaView,
+  ImageBackground,
 } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 
-const dummyOrders = [
-  { id: '1', title: 'Plumbing Repair', date: 'June 27', status: 'Ongoing' },
-  { id: '2', title: 'AC Installation', date: 'June 25', status: 'Completed' },
-  { id: '3', title: 'Wall Painting', date: 'June 22', status: 'Ongoing' },
-  { id: '4', title: 'Ceiling Fan Fix', date: 'June 20', status: 'Completed' },
-];
-
-export default function OrdersScreen() {
-  const [filter, setFilter] = useState('Ongoing');
-
-  const filteredOrders = dummyOrders.filter((item) => item.status === filter);
+export default function ProfileScreen() {
+  const user = {
+    name: 'Elvis Owusu-Sekyere',
+    email: 'elvis@example.com',
+    avatar: 'https://randomuser.me/api/portraits/men/75.jpg',
+    role: 'Client',
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>My Requests</Text>
+    <ImageBackground
+      source={require('../assets/backgrounds/image1.jpg')}
+      style={styles.background}
+      imageStyle={{ opacity: 0.08 }}
+    >
+      <SafeAreaView style={styles.container}>
+        <View style={styles.profileBox}>
+          <Image source={{ uri: user.avatar }} style={styles.avatar} />
+          <Text style={styles.name}>{user.name}</Text>
+          <Text style={styles.email}>{user.email}</Text>
+          <Text style={styles.role}>{user.role}</Text>
+        </View>
 
-      <View style={styles.tabs}>
-        {['Ongoing', 'Completed'].map((status) => (
-          <TouchableOpacity
-            key={status}
-            style={[
-              styles.tab,
-              filter === status && styles.activeTab,
-            ]}
-            onPress={() => setFilter(status)}
-          >
-            <Text
-              style={[
-                styles.tabText,
-                filter === status && styles.activeTabText,
-              ]}
-            >
-              {status}
-            </Text>
+        <View style={styles.actions}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Edit Profile</Text>
           </TouchableOpacity>
-        ))}
-      </View>
-
-      <FlatList
-        data={filteredOrders}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingBottom: 80 }}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <MaterialIcons name="work" size={24} color="#D84315" />
-            <View style={{ marginLeft: 12, flex: 1 }}>
-              <Text style={styles.jobTitle}>{item.title}</Text>
-              <Text style={styles.jobDate}>{item.date}</Text>
-            </View>
-            <Text style={styles.status}>{item.status}</Text>
-          </View>
-        )}
-      />
-    </SafeAreaView>
+          <TouchableOpacity style={[styles.button, styles.logout]}>
+            <Text style={[styles.buttonText, styles.logoutText]}>Logout</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FFF3E0', padding: 16 },
-  header: {
-    fontSize: 26,
+  background: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    paddingTop: 80,
+    paddingHorizontal: 20,
+  },
+  profileBox: {
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 16,
+  },
+  name: {
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#D84315',
-    textAlign: 'center',
-    marginBottom: 16,
   },
-  tabs: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  tab: {
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    backgroundColor: '#FFE0B2',
-    borderRadius: 20,
-    marginHorizontal: 10,
-  },
-  activeTab: {
-    backgroundColor: '#D84315',
-  },
-  tabText: {
+  email: {
     fontSize: 14,
-    color: '#333',
-  },
-  activeTabText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 12,
-    elevation: 1,
-  },
-  jobTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-  },
-  jobDate: {
-    fontSize: 12,
-    color: '#888',
+    color: '#666',
     marginTop: 4,
   },
-  status: {
-    fontSize: 12,
+  role: {
+    fontSize: 14,
+    color: '#888',
+    marginTop: 2,
+    fontStyle: 'italic',
+  },
+  actions: {
+    width: '100%',
+  },
+  button: {
+    backgroundColor: '#D84315',
+    paddingVertical: 14,
+    borderRadius: 10,
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
     fontWeight: 'bold',
+    fontSize: 16,
+  },
+  logout: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#D84315',
+  },
+  logoutText: {
     color: '#D84315',
   },
 });

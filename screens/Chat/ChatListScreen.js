@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ImageBackground,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -58,8 +59,6 @@ const dummyChats = [
 export default function ChatListScreen() {
   const navigation = useNavigation();
 
-  const handleBack = () => navigation.goBack();
-
   const handleChatPress = (chat) => {
     navigation.navigate('Chat', {
       name: chat.name,
@@ -86,31 +85,42 @@ export default function ChatListScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#D84315" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Chats</Text>
-      </View>
+    <ImageBackground
+      source={require('../../assets/backgrounds/image1.jpg')}
+      style={styles.background}
+      imageStyle={{ opacity: 0.1 }}
+    >
+      <View style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
+            <Ionicons name="arrow-back" size={24} color="#D84315" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Chats</Text>
+        </View>
 
-      {/* Chat List */}
-      <FlatList
-        data={dummyChats}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={{ paddingBottom: 20 }}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+        {/* Chat List */}
+        <FlatList
+          data={dummyChats}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
     paddingHorizontal: 16,
   },
   header: {
@@ -118,7 +128,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 60,
     paddingBottom: 20,
-    backgroundColor: '#FFF3E0',
   },
   backButton: {
     marginRight: 16,
