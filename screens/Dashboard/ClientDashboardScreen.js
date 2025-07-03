@@ -48,7 +48,7 @@ export default function ClientDashboardScreen() {
     <ImageBackground
       source={require('../../assets/backgrounds/image1.jpg')}
       style={styles.background}
-      imageStyle={{ opacity: 0.2 }} // 👈 Darker overlay
+      imageStyle={{ opacity: 0.4 }} // Richer darker background
     >
       <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>

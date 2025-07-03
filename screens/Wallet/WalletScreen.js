@@ -25,7 +25,7 @@ export default function WalletScreen() {
     <ImageBackground
       source={require('../../assets/backgrounds/image1.jpg')}
       style={{ flex: 1 }}
-      imageStyle={{ opacity: 0.2 }} // 👈 darker effect
+      imageStyle={{ opacity: 0.4 }} // ← Darker, richer subtle background
     >
       <SafeAreaView style={styles.safeArea}>
         <ScrollView contentContainerStyle={styles.container}>

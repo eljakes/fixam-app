@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
@@ -26,7 +25,7 @@ export default function ArtisanDashboardScreen() {
     <ImageBackground
       source={require('../../assets/backgrounds/image1.jpg')}
       style={styles.background}
-      imageStyle={{ opacity: 0.2 }} // ← Darker background
+      imageStyle={{ opacity: 0.4 }} // ← Darker, richer background
     >
       <ScrollView contentContainerStyle={styles.container}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>

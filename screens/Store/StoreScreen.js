@@ -205,10 +205,10 @@ const styles = StyleSheet.create({
   },
   topBar: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 50 : 30,
+    top: Platform.OS === 'ios' ? 30 : 10, // moved up from 50/30 to 30/10
     width: '100%',
     height: 50,
-    backgroundColor: '#FFF3E0',
+    backgroundColor: 'transparent', // made transparent
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
